@@ -52,27 +52,27 @@ $csrfToken = getCsrfToken();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de usúario</title>
     <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main class="auth-container">
-        <h1></h1>
+        <h1>Criar conta</h1>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <input 
                 type="text" 
                 name="name" 
                 placeholder="Seu nome" 
-                value="<?php echo htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE
-            ); ?>" required>
+                value="<?php echo htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE); ?>" 
+                required
+            >
             <input 
                 type="email" 
                 name="email"
                 placeholder="Seu e-mail"
-                value="<?php echo htmlspecialchars
-                    ($_POST['email'] ?? '',
-                    ENT_QUOTES | ENT_SUBSTITUTE
-                ) ?>" 
-                required>
+                value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE); ?>" 
+                required
+            >
             <input type="password" name="password" placeholder="Senha" required>
             <input type="password" name="password_confirm" placeholder="Confirme a senha" required>
             <button type="submit">Cadastrar</button>

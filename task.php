@@ -125,7 +125,7 @@ function registerUser(string $name, string $email, string $password): array|fals
         ]);
         $id = (int) $pdo->lastInsertId();
         return ['id' => $id, 'name' => $email];
-    }catch (PDOException $e) {
+    } catch (PDOException $e) {
         // Em caso de erro de permissão
         return false;
     }
