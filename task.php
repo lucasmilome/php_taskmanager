@@ -24,17 +24,49 @@ function getConnection() {
 
 function initializeDatabase(): void {
     $pdo = getConnection();
+
+    $pdo->exec(
+        'CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOR NULL UNIQUE,
+        password_hash TEXT NOT NULL,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );'
+    );
+
     $pdo->exec(
         'CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            text TEXT NOT NULL,
-            completed INTEGER NOT NULL DEFAULT 0,
-            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-        )'
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        text TEXT NOT NULL,
+        completed INTEGER NOT NULL DEFAULT 0,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        user_id INTEGER,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        );'
     );
 }
 
 initializeDatabase();
+
+function getCurrentUserId(): ?int {
+    $id = $_SESSION['id'] ?? null;
+    if ($id === null) return null;
+
+    $id = (int) $id;
+    return $id > 0?  $id : null;
+}
+
+function getCurrentUser(): ?array {
+    $uid = getCurrentUserId();
+    if ($uid === null) return null;
+    
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('SELECT id, name, email FROM users WHERE id = :id');
+    $stmt->execute([':id' => $uid]);
+    $user = $stmt->fetch();
+    return $user ?: null;
+}
 
 function getTasks(): array {
     $pdo = getConnection();

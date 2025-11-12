@@ -1,5 +1,7 @@
 <?php
-require 'task.php';
+require __DIR__ . '/task.php';
+
+$currentUser = getCurrentUser();
 
 $editId = filter_input(INPUT_GET, 'edit', FILTER_VALIDATE_INT);
 $editingTask = null;
@@ -29,6 +31,16 @@ $csrfToken = $_SESSION['csrf_token'];
 <body>
     <div class= "container">
         <h1>Gerenciador de Tarefas</h1>
+
+        <div>
+            <div style="font-size: 0.9rem, color: #372151;">
+                Logado como: <strong><?php echo htmlspecialchars($currentUser['name'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE); ?></strong>
+            </div>
+            <div>
+                <form action="logout.php"></form>
+            </div>
+        </div>
+
         <form action="<?php echo $formAction; ?>" method="POST" id="task-form">
             <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <input type="hidden" name="action" value="<?php echo $editingTask ? 'edit' : 'add'; ?>">
